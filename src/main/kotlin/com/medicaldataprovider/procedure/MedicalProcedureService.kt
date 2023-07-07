@@ -1,68 +1,45 @@
 package com.medicaldataprovider.procedure
 
-import com.medicaldataprovider.procedure.dto.MedicalProcedureRecordDto
+import com.medicaldataprovider.procedure.dto.MedicalProcedureDataFilter
 import com.medicaldataprovider.procedure.mapper.MedicalProcedureRowMapper
 import com.medicaldataprovider.procedure.model.MedicalProcedureRecord
+import com.medicaldataprovider.procedure.util.splitToUUIDList
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
 import org.springframework.stereotype.Service
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.util.UUID
 
 @Service
-class MedicalProcedureService(private val jdbcTemplate: JdbcTemplate) {
-    fun getMedicalProcedureRecords(
-        startDate: Instant?,
-        endDate: Instant?,
-        procedureIds: List<UUID>?,
-        diagnosisIds: List<UUID>?,
-        categoryIds: List<UUID>?,
-    ): List<MedicalProcedureRecord> {
-        val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
+class MedicalProcedureService(jdbcTemplate: JdbcTemplate) {
+    private val namedParameterJdbcTemplate = NamedParameterJdbcTemplate(jdbcTemplate)
 
+    fun fetchMedicalProcedureRecords(filter: MedicalProcedureDataFilter): List<MedicalProcedureRecord> {
+        val sql = buildSqlQuery(filter)
+        val paramMap = buildSqlParameters(filter)
+
+        return namedParameterJdbcTemplate.query(sql, paramMap, MedicalProcedureRowMapper())
+    }
+
+    private fun buildSqlQuery(filter: MedicalProcedureDataFilter): String {
         val sql = StringBuilder(
-            """ SELECT * FROM medical_procedure_record WHERE 1=1 """ //fixme: use a query builder
+            """SELECT * FROM medical_procedure_record WHERE 1=1""" //fixme use query builder
         )
 
-        procedureIds?.let {
-            sql.append(" AND procedure_id IN (:procedureIds)")
-        }
+        filter.procedureIds?.let { sql.append(" AND procedure_id IN (:procedureIds)") }
+        filter.diagnosisIds?.let { sql.append(" AND diagnosis_id IN (:diagnosisIds)") }
+        filter.categoryIds?.let { sql.append(" AND category_id IN (:categoryIds)") }
+        filter.startDate?.let { sql.append(" AND time_stamp >= :startDate") }
+        filter.endDate?.let { sql.append(" AND time_stamp <= :endDate") }
 
-        diagnosisIds?.let {
-            sql.append(" AND diagnosis_id IN (:diagnosisIds)")
-        }
+        return sql.toString()
+    }
 
-        categoryIds?.let {
-            sql.append(" AND category_id IN (:categoryIds)")
-        }
-
-        startDate?.let {
-            sql.append(" AND time_stamp >= :startDate")
-        }
-        endDate?.let {
-            sql.append(" AND time_stamp <= :endDate")
-        }
-
-        val paramMap = MapSqlParameterSource()
-            .addValue("procedureIds", procedureIds)
-            .addValue("diagnosisIds", diagnosisIds)
-            .addValue(
-                "startDate",
-                startDate?.let { LocalDateTime.ofInstant(it, ZoneId.systemDefault()) })
-            .addValue("endDate", endDate?.let { LocalDateTime.ofInstant(it, ZoneId.systemDefault()) })
-
-        return namedParameterJdbcTemplate.query(sql.toString(), paramMap, MedicalProcedureRowMapper())
+    private fun buildSqlParameters(filter: MedicalProcedureDataFilter): MapSqlParameterSource {
+        return MapSqlParameterSource()
+            .addValue("procedureIds", filter.procedureIds?.splitToUUIDList())
+            .addValue("diagnosisIds", filter.diagnosisIds?.splitToUUIDList())
+            .addValue("categoryIds", filter.categoryIds?.splitToUUIDList())
+            .addValue("startDate", filter.startDate)
+            .addValue("endDate", filter.endDate)
     }
 }
-
-fun Map<UUID, List<MedicalProcedureRecord>>.toMedicalProcedureRecordDtoList(): List<MedicalProcedureRecordDto> =
-    map {
-        val propertyId = it.key
-        val recordList = it.value
-        MedicalProcedureRecordDto(propertyId.toString(), recordList.size.toDouble())
-    }.toList()
-
-fun Instant.toLocalDateTime(): LocalDateTime = LocalDateTime.ofInstant(this, ZoneId.systemDefault())

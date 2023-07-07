@@ -4,6 +4,7 @@ import com.medicaldataprovider.procedure.model.MedicalProcedureRecord
 import java.sql.ResultSet
 import java.util.UUID
 import org.springframework.jdbc.core.RowMapper
+
 class MedicalProcedureRowMapper : RowMapper<MedicalProcedureRecord> {
     override fun mapRow(rs: ResultSet, rowNum: Int): MedicalProcedureRecord {
         return MedicalProcedureRecord(

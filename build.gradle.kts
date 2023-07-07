@@ -7,6 +7,7 @@ plugins {
     id("com.google.cloud.tools.jib") version "3.3.1"
     kotlin("jvm") version "1.8.22"
     kotlin("plugin.spring") version "1.8.22"
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 group = "com.medicaldataprovider"
@@ -24,7 +25,10 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
+    implementation("mysql:mysql-connector-java:8.0.33")
 
+    testImplementation("com.h2database:h2:2.1.214")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("com.github.tomakehurst:wiremock-jre8-standalone:2.35.0")
     testImplementation("org.mock-server:mockserver-netty:5.15.0")

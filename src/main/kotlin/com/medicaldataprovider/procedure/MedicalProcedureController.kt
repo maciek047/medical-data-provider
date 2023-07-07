@@ -1,14 +1,10 @@
 package com.medicaldataprovider.procedure
 
+import com.medicaldataprovider.procedure.dto.MedicalProcedureDataRequest
 import com.medicaldataprovider.procedure.dto.MedicalProcedureDataResponse
-import com.medicaldataprovider.procedure.model.ProcedureRecordStackType
-import com.medicaldataprovider.procedure.model.ProcedureRecordValueType
-import com.medicaldataprovider.procedure.model.TimeIncrement
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import java.time.Instant
-import java.util.UUID
+import org.springframework.http.HttpStatus
 
 @RestController
 @RequestMapping("/api")
@@ -16,43 +12,22 @@ class MedicalProcedureController(
     private val medicalProcedureService: MedicalProcedureService,
     private val assemblyService: MedicalProcedureDataAssemblyService
 ) {
-    @GetMapping("/medical-procedure-data")
-    fun getMedicalProcedureData(request: MedicalProcedureDataRequest): ResponseEntity<MedicalProcedureDataResponse> {
+    @PostMapping("/medical-procedures")
+    fun fetchMedicalProcedureData(@RequestBody request: MedicalProcedureDataRequest): MedicalProcedureDataResponse {
 
-        val medicalProcedureRecords = medicalProcedureService.getMedicalProcedureRecords(
-            startDate = request.filter.startDate,
-            endDate = request.filter.endDate,
-            procedureIds = request.filter.procedureIds?.splitToUUIDList(),
-            diagnosisIds = request.filter.diagnosisIds?.splitToUUIDList(),
-            categoryIds = request.filter.categoryIds?.splitToUUIDList()
-        )
+        val medicalProcedureRecords = medicalProcedureService.fetchMedicalProcedureRecords(filter = request.filter)
 
-        val medicalProcedureDataResponse = assemblyService.assembleResults(
+        return assemblyService.assembleResults(
             medicalProcedureRecords,
             request.timeIncrement,
             request.recordStackType,
             request.procedureRecordValueType
         )
+    }
 
-        return ResponseEntity.ok(medicalProcedureDataResponse)
+    @ExceptionHandler(RuntimeException::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleException(e: RuntimeException): String {
+        return "An error occurred: ${e.message}"
     }
 }
-
-
-data class MedicalProcedureDataRequest (
-    @RequestParam val timeIncrement: TimeIncrement,
-    @RequestParam val recordStackType: ProcedureRecordStackType,
-    @RequestParam val procedureRecordValueType: ProcedureRecordValueType,
-    @RequestParam val filter: MedicalProcedureDataFilter
-)
-
-
-data class MedicalProcedureDataFilter (
-    @RequestParam val categoryIds: String? = null,
-    @RequestParam val procedureIds: String? = null,
-    @RequestParam val diagnosisIds: String? = null,
-    @RequestParam val startDate: Instant? = null,
-    @RequestParam val endDate: Instant? = null,
-)
-
-fun String.splitToUUIDList(): List<UUID> = this.split(",").map { UUID.fromString(it) }

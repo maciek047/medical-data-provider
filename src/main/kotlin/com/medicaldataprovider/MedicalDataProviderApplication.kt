@@ -6,8 +6,7 @@ import org.springframework.boot.runApplication
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-class MedialDataProviderApplication
-
+class MedicalDataProviderApplication
 fun main(args: Array<String>) {
-    runApplication<MedialDataProviderApplication>(*args)
+    runApplication<MedicalDataProviderApplication>(*args)
 }

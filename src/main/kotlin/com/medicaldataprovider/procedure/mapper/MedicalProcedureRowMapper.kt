@@ -1,6 +1,6 @@
-package com.medicaldataprovider.mapper
+package com.medicaldataprovider.procedure.mapper
 
-import com.medicaldataprovider.model.MedicalProcedureRecord
+import com.medicaldataprovider.procedure.model.MedicalProcedureRecord
 import java.sql.ResultSet
 import java.util.UUID
 import org.springframework.jdbc.core.RowMapper

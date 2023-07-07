@@ -1,18 +1,18 @@
 package com.medicaldataprovider.procedure
 
-import com.medicaldataprovider.dto.MedicalProcedureDataResponse
-import com.medicaldataprovider.dto.MedicalProcedureRecordCountStackDto
-import com.medicaldataprovider.model.MedicalProcedureRecord
-import com.medicaldataprovider.model.ProcedureRecordStackType
-import com.medicaldataprovider.model.ProcedureRecordStackType.DIAGNOSIS
-import com.medicaldataprovider.model.ProcedureRecordStackType.PROCEDURE
-import com.medicaldataprovider.model.ProcedureRecordStackType.CATEGORY
-import com.medicaldataprovider.model.ProcedureRecordStackType.NONE
-import com.medicaldataprovider.model.ProcedureRecordValueType
-import com.medicaldataprovider.model.TimeIncrement
-import com.medicaldataprovider.model.TimeIncrement.MONTH
-import com.medicaldataprovider.model.TimeIncrement.QUARTER
-import com.medicaldataprovider.model.TimeIncrement.YEAR
+import com.medicaldataprovider.procedure.dto.MedicalProcedureDataResponse
+import com.medicaldataprovider.procedure.dto.MedicalProcedureRecordCountStackDto
+import com.medicaldataprovider.procedure.model.MedicalProcedureRecord
+import com.medicaldataprovider.procedure.model.ProcedureRecordStackType
+import com.medicaldataprovider.procedure.model.ProcedureRecordStackType.DIAGNOSIS
+import com.medicaldataprovider.procedure.model.ProcedureRecordStackType.PROCEDURE
+import com.medicaldataprovider.procedure.model.ProcedureRecordStackType.CATEGORY
+import com.medicaldataprovider.procedure.model.ProcedureRecordStackType.NONE
+import com.medicaldataprovider.procedure.model.ProcedureRecordValueType
+import com.medicaldataprovider.procedure.model.TimeIncrement
+import com.medicaldataprovider.procedure.model.TimeIncrement.MONTH
+import com.medicaldataprovider.procedure.model.TimeIncrement.QUARTER
+import com.medicaldataprovider.procedure.model.TimeIncrement.YEAR
 import org.springframework.stereotype.Service
 import java.util.UUID
 

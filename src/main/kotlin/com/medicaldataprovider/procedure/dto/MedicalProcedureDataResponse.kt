@@ -1,8 +1,8 @@
-package com.medicaldataprovider.dto
+package com.medicaldataprovider.procedure.dto
 
-import com.medicaldataprovider.model.ProcedureRecordStackType
-import com.medicaldataprovider.model.ProcedureRecordValueType
-import com.medicaldataprovider.model.TimeIncrement
+import com.medicaldataprovider.procedure.model.ProcedureRecordStackType
+import com.medicaldataprovider.procedure.model.ProcedureRecordValueType
+import com.medicaldataprovider.procedure.model.TimeIncrement
 
 data class MedicalProcedureDataResponse (
     val timeIncrement: TimeIncrement,

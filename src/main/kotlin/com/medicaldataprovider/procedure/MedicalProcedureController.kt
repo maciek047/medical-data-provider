@@ -1,9 +1,9 @@
 package com.medicaldataprovider.procedure
 
-import com.medicaldataprovider.dto.MedicalProcedureDataResponse
-import com.medicaldataprovider.model.ProcedureRecordStackType
-import com.medicaldataprovider.model.ProcedureRecordValueType
-import com.medicaldataprovider.model.TimeIncrement
+import com.medicaldataprovider.procedure.dto.MedicalProcedureDataResponse
+import com.medicaldataprovider.procedure.model.ProcedureRecordStackType
+import com.medicaldataprovider.procedure.model.ProcedureRecordValueType
+import com.medicaldataprovider.procedure.model.TimeIncrement
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*

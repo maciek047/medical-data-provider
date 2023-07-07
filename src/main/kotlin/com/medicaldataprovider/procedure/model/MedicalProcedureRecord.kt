@@ -1,4 +1,4 @@
-package com.medicaldataprovider.model
+package com.medicaldataprovider.procedure.model
 
 import java.time.Instant
 import java.util.UUID

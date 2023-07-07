@@ -1,4 +1,4 @@
-package com.medicaldataprovider.model
+package com.medicaldataprovider.procedure.model
 
 enum class MedicalProcedureCategory(val value: String) {
     SURGERY("diagnosis"),

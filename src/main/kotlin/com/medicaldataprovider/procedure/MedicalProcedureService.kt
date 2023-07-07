@@ -1,8 +1,8 @@
 package com.medicaldataprovider.procedure
 
-import com.medicaldataprovider.dto.MedicalProcedureRecordDto
-import com.medicaldataprovider.mapper.MedicalProcedureRowMapper
-import com.medicaldataprovider.model.MedicalProcedureRecord
+import com.medicaldataprovider.procedure.dto.MedicalProcedureRecordDto
+import com.medicaldataprovider.procedure.mapper.MedicalProcedureRowMapper
+import com.medicaldataprovider.procedure.model.MedicalProcedureRecord
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
